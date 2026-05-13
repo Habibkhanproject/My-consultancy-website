@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down("md")); // tablet & mobile
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const [open, setOpen] = useState(false);
 
@@ -36,14 +36,20 @@ const Navbar = () => {
     <AppBar
       position="sticky"
       elevation={0}
-      sx={{ width: "100%", backgroundColor: "#f5f7fb" }}
+      sx={{
+        width: "100%",
+        backgroundColor: "#f5f7fb",
+        padding: "0",
+        margin: "0",
+      }}
     >
       <Box
         sx={{
           backgroundColor: "#fff",
-          borderRadius: "14px",
-          padding: "10px 20px",
+          borderRadius: "0px",
+          padding: "7px 25px",
           border: "1px solid #e0e0e0",
+          margin: 0,
         }}
       >
         <Toolbar
@@ -51,12 +57,17 @@ const Navbar = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
+            minHeight: "65px",
           }}
         >
           {/* Logo */}
           <Typography
             variant="h5"
-            sx={{ fontWeight: "bold", color: "#1976d2" }}
+            sx={{
+              fontWeight: "bold",
+              color: "#0a0a0a",
+              ml: 1,
+            }}
           >
             Google Scholar Hub
           </Typography>
@@ -65,13 +76,17 @@ const Navbar = () => {
           {!isTablet && (
             <>
               {/* Middle Links */}
-              <Box sx={{ display: "flex", gap: 2, color:"black" }}>
+              <Box sx={{ display: "flex", gap: 2, color: "black" }}>
                 {menuItems.map((item) => (
                   <Button
                     key={item.text}
                     color="inherit"
                     component={Link}
                     to={item.path}
+                    sx={{
+                      textTransform: "none",
+                      fontSize: "15px",
+                    }}
                   >
                     {item.text}
                   </Button>
@@ -79,12 +94,18 @@ const Navbar = () => {
               </Box>
 
               {/* Right Buttons */}
-              <Box sx={{ display: "flex", gap: 2 }}>
+              <Box sx={{ display: "flex", gap: 2, mr: 1 }}>
                 <Button
-                  variant="outlined"
+                  variant="text"
                   component={Link}
                   to="/dashboard"
-                  sx={{ borderRadius: "8px", textTransform: "none" }}
+                  sx={{
+                    border: "none",
+                    textTransform: "none",
+                    padding: "8px 18px",
+                    fontSize: "15px",
+                    color: "black",
+                  }}
                 >
                   Dashboard
                 </Button>
@@ -93,7 +114,12 @@ const Navbar = () => {
                   variant="contained"
                   component={Link}
                   to="/apply"
-                  sx={{ borderRadius: "8px", textTransform: "none" }}
+                  sx={{
+                    borderRadius: "10px",
+                    textTransform: "none",
+                    padding: "8px 18px",
+                    fontSize: "15px",
+                  }}
                 >
                   Apply Now
                 </Button>
@@ -110,9 +136,9 @@ const Navbar = () => {
         </Toolbar>
       </Box>
 
-      {/* DRAWER MENU (for tablet/mobile) */}
+      {/* DRAWER MENU */}
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ width: 250, padding: 2}}>
+        <Box sx={{ width: 250, padding: 2 }}>
           {/* Close button */}
           <IconButton onClick={() => setOpen(false)}>
             <CloseIcon />
