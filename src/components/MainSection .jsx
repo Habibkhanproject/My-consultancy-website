@@ -2,21 +2,23 @@ import React from "react";
 import { Box, Typography, Paper, Avatar } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import BasicRating from "../icons/BasicRating";
+import zarak from "../assets/images/zarakimage.jpg";
+import habib from "../assets/images/habibimage.jpg";
 
 const data = [
   {
     icon: <BasicRating />,
-    name: "John Doe",
+    name: "Zarak Khan",
     role: "Student Consultant",
     desc: "The team at Global Scholars Hub made my dream of studying in Germany a reality. Their scholarship guidance was exceptional.",
-    img: "https://i.pravatar.cc/150?img=3",
+    img: zarak,
   },
   {
     icon: <BasicRating />,
-    name: "Ali Khan",
+    name: "Habib Ullah",
     role: "IELTS Student",
     desc: "I applied for Canada with low expectations, but their visa success rate isn't just a number—they truly know the system inside out.",
-    img: "https://i.pravatar.cc/150?img=5",
+    img: habib,
   },
   {
     icon: <BasicRating />,
