@@ -72,7 +72,7 @@ const Boxes = () => {
 
       {/* 5 BOXES ROW */}
       <Stack
-        direction={{ xs: "column", sm: "row" }} // ✅ mobile fix
+        direction={{ xs: "column", sm: "row" }}
         spacing={2}
         sx={{
           width: "100%",
@@ -87,7 +87,7 @@ const Boxes = () => {
             elevation={3}
             sx={{
               width: {
-                xs: "95%",   // ✅ full mobile width
+                xs: "95%",
                 sm: "180px",
                 md: "230px",
               },
@@ -99,6 +99,11 @@ const Boxes = () => {
               borderRadius: 3,
               position: "relative",
               overflow: "hidden",
+
+              // ✅ hover trigger on Paper
+              "&:hover img": {
+                transform: "scale(1.15)",
+              },
             }}
           >
             {/* IMAGE */}
