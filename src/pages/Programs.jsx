@@ -1,9 +1,12 @@
 import { Typography, Box } from "@mui/material";
+import Header from "../components/Program-compoent/Header";
+import ProgramBoxesSection from "../components/Program-compoent/ProgromBoxessection";
 
 const Programs = () => {
   return (
-    <Box sx={{ p: 5 }}>
-      <Typography variant="h4">Programs Page</Typography>
+    <Box>
+      <Header />
+      <ProgramBoxesSection />
     </Box>
   );
 };

@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <AppBar
       position="sticky"
-      elevation={0}
+      elevation={4}
       sx={{
         width: "100%",
         backgroundColor: "#f5f7fb",

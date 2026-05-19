@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, Button, Paper, Stack } from "@mui/material";
-
 import SchoolIcon from "@mui/icons-material/School";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import GroupsIcon from "@mui/icons-material/Groups";

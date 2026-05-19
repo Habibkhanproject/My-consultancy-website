@@ -20,7 +20,7 @@ export default function Footer() {
         bgcolor: "#0d1b2a",
         color: "#fff",
         py: { xs: 4, sm: 6 },
-        px: { xs: 3, sm: 6, md: 8 },
+        px: { xs: 2, sm: 4, md: 8 },
       }}
     >
       {/* MAIN CONTAINER */}
@@ -28,22 +28,44 @@ export default function Footer() {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
+          flexWrap: "wrap",
           justifyContent: "space-between",
-          gap: 4,
+          gap: { xs: 3, sm: 4 },
         }}
       >
         {/* BOX 1 */}
-        <Box sx={{ flex: 1, minWidth: 220 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", sm: "1 1 45%", md: 1 },
+            minWidth: { xs: "100%", sm: 220 },
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+          >
             Global Scholars Hub
           </Typography>
 
-          <Typography variant="body2" sx={{ mb: 2, color: "#cbd5e1" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 2,
+              color: "#cbd5e1",
+              fontSize: { xs: 13, sm: 14 },
+            }}
+          >
             Your trusted partner in international education and scholarship
             placements since 2018.
           </Typography>
 
-          <Stack direction="row" spacing={2}>
+          <Stack
+            direction="row"
+            spacing={{ xs: 1.5, sm: 2 }}
+            flexWrap="wrap"
+          >
             <HomeIcon />
             <MailIcon />
             <PhoneIcon />
@@ -51,48 +73,102 @@ export default function Footer() {
         </Box>
 
         {/* BOX 2 */}
-        <Box sx={{ flex: 1, minWidth: 180 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", sm: "1 1 45%", md: 1 },
+            minWidth: { xs: "100%", sm: 180 },
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+          >
             Quick Links
           </Typography>
 
           <Stack spacing={1} sx={{ color: "#cbd5e1" }}>
-            <Typography>Study in UK</Typography>
-            <Typography>Study in USA</Typography>
-            <Typography>Scholarships</Typography>
-            <Typography>Visa Guidance</Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Study in UK
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Study in USA
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Scholarships
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Visa Guidance
+            </Typography>
           </Stack>
         </Box>
 
         {/* BOX 3 */}
-        <Box sx={{ flex: 1, minWidth: 180 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", sm: "1 1 45%", md: 1 },
+            minWidth: { xs: "100%", sm: 180 },
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+          >
             Legal
           </Typography>
 
           <Stack spacing={1} sx={{ color: "#cbd5e1" }}>
-            <Typography>Privacy Policy</Typography>
-            <Typography>Terms of Service</Typography>
-            <Typography>Cookie Policy</Typography>
-            <Typography>Accreditations</Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Privacy Policy
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Terms of Service
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Cookie Policy
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>
+              Accreditations
+            </Typography>
           </Stack>
         </Box>
 
         {/* BOX 4 */}
-        <Box sx={{ flex: 1, minWidth: 250 }}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+        <Box
+          sx={{
+            flex: { xs: "1 1 100%", sm: "1 1 45%", md: 1 },
+            minWidth: { xs: "100%", sm: 250 },
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+          >
             Newsletter
           </Typography>
 
-          <Typography variant="body2" sx={{ mb: 2, color: "#cbd5e1" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 2,
+              color: "#cbd5e1",
+              fontSize: { xs: 13, sm: 14 },
+            }}
+          >
             Stay updated with the latest scholarship deadlines.
           </Typography>
 
-          {/* ✅ FIXED TextField (ONLY place InputProps is used) */}
+          {/* TextField */}
           <TextField
             fullWidth
             placeholder="Your Email Address"
             variant="outlined"
+            size="small"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -106,7 +182,10 @@ export default function Footer() {
               ),
             }}
             sx={{
-              input: { color: "#fff" },
+              input: {
+                color: "#fff",
+                fontSize: { xs: 13, sm: 14 },
+              },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "#334155" },
                 "&:hover fieldset": { borderColor: "#64748b" },
