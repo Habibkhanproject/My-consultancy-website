@@ -3,15 +3,14 @@ import {
   Box,
   Button,
   Typography,
-  Paper,
-  TextField,
-  MenuItem,
+  Grid,
 } from "@mui/material";
 
 import SchoolIcon from "@mui/icons-material/School";
 import StarIcon from "@mui/icons-material/Star";
 import LanguageIcon from "@mui/icons-material/Language";
 import PersonIcon from "@mui/icons-material/Person";
+
 import RightTopBox from "./RightTopBox";
 import RightBottomBox from "./RightBottomBox";
 
@@ -135,32 +134,44 @@ export default function ProgramBoxesSection() {
     <Box
       sx={{
         width: "100%",
-        px: { xs: 1.5, sm: 3, md: 4 },
-        py: { xs: 2, md: 4 },
         bgcolor: "#f5f7ff",
+        py: { xs: 4, md: 6 },
+        px: { xs: 2, sm: 3, lg: 4 },
       }}
     >
-      <Box sx={{ maxWidth: 1300, mx: "auto" }}>
-        
-        {/* BUTTONS */}
+      <Box
+        sx={{
+          maxWidth: "1400px",
+          mx: "auto",
+        }}
+      >
+        {/* FILTER BUTTONS */}
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
-            gap: { xs: 1, sm: 2 },
-            mb: { xs: 2, md: 4 },
-            justifyContent: { xs: "center", md: "flex-start" },
+            alignItems: "center",
+            gap: 1.5,
+            mb: { xs: 3, md: 5 },
           }}
         >
           {["All", "Programs", "Courses", "Services"].map((text) => (
             <Button
               key={text}
               variant="contained"
+              disableElevation
               sx={{
-                borderRadius: 20,
                 bgcolor: "#0058be",
-                px: { xs: 2, sm: 3 },
-                fontSize: { xs: 12, sm: 14 },
+                borderRadius: "999px",
+                textTransform: "none",
+                fontWeight: 600,
+                px: 3,
+                py: 1,
+                fontSize: { xs: "13px", sm: "14px" },
+
+                "&:hover": {
+                  bgcolor: "#004a9f",
+                },
               }}
             >
               {text}
@@ -168,166 +179,219 @@ export default function ProgramBoxesSection() {
           ))}
         </Box>
 
-        {/* MAIN LAYOUT */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: { xs: 3, md: 7 },
-            alignItems: "stretch",
-          }}
+        {/* MAIN GRID LAYOUT */}
+        <Grid
+          container
+          spacing={{ xs: 3, md: 4 }}
+  
         >
-          
-          {/* LEFT SIDE */}
-          <Box
-            sx={{
-              flex: { xs: "1 1 100%", md: "0 0 70%" },
-              width: "100%",
-              maxWidth: { md: "820px" },
-            }}
-          >
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "1fr",
-                  md: "1fr 1fr",
-                },
-                gap: { xs: 2, sm: 2, md: 1.5 },
-              }}
-            >
+          {/* LEFT CONTENT */}
+          <Grid  size={{xs: 12, md: 8}}>
+            <Grid container spacing={{ xs: 3, md: 3 }}>
               {leftCards.map((item, index) => (
-                <Box key={index}>
+                <Grid size={{xs: 12, md: 6}} key={index}>
                   <Box
                     sx={{
-                      borderRadius: 3,
-                      bgcolor: "#fff",
-                      overflow: "hidden",
+                      height: "100%",
                       display: "flex",
                       flexDirection: "column",
-                      height: "100%",
+                      bgcolor: "#fff",
+                      borderRadius: "24px",
+                      overflow: "hidden",
+                      transition: "all 0.35s ease",
+
+                      "&:hover": {
+                        transform: "translateY(-6px)",
+                        boxShadow: "0 18px 40px rgba(0,0,0,0.08)",
+                      },
                     }}
                   >
                     {/* IMAGE */}
-                    <Box sx={{ position: "relative" }}>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
                       <Box
+                        component="img"
+                        src={item.img}
+                        alt={item.title}
                         sx={{
                           width: "100%",
-                          height: { xs: 160, sm: 180, md: 200 },
-                          overflow: "hidden",
-                          borderRadius: 2,
-                          mb: 2,
-                        }}
-                      >
-                        <Box
-                          component="img"
-                          src={item.img}
-                          sx={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            transition: "0.4s ease",
-                            "&:hover": { transform: "scale(1.1)" },
-                          }}
-                        />
-                      </Box>
+                          height: {
+                            xs: 220,
+                            sm: 240,
+                            md: 250,
+                          },
+                          objectFit: "cover",
+                          transition: "transform 0.5s ease",
 
+                          "&:hover": {
+                            transform: "scale(1.08)",
+                          },
+                        }}
+                      />
+
+                      {/* LABEL */}
                       <Box
                         sx={{
                           position: "absolute",
-                          top: 12,
-                          left: 12,
+                          top: 16,
+                          left: 16,
                           bgcolor: "#0f172a",
                           color: "#fff",
-                          px: 2,
-                          py: 0.6,
                           borderRadius: "999px",
+                          px: 2,
+                          py: 0.7,
+                          backdropFilter: "blur(10px)",
                         }}
                       >
-                        <Typography sx={{ fontSize: "12px", fontWeight: 700 }}>
+                        <Typography
+                          sx={{
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            letterSpacing: 1,
+                          }}
+                        >
                           {item.labels}
                         </Typography>
                       </Box>
                     </Box>
 
-                    <Typography
-                      variant="h5"
-                      fontWeight="bolder"
-                      sx={{
-                        pl: 2,
-                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.5rem" },
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-
-                    <Typography variant="body2" sx={{ mb: 2, pl: 2 }}>
-                      {item.desc}
-                    </Typography>
-
-                    {/* FEATURES */}
+                    {/* CONTENT */}
                     <Box
                       sx={{
-                        display: "grid",
-                        gridTemplateColumns: {
-                          xs: "1fr",
-                          sm: "1fr 1fr",
-                        },
-                        mb: 2,
+                        p: { xs: 2, md: 3 },
+                        display: "flex",
+                        flexDirection: "column",
+                        flexGrow: 1,
                       }}
                     >
-                      {item.features.map((f, i) => (
-                        <Box
-                          key={i}
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          fontWeight: 700,
+                          lineHeight: 1.3,
+                          mb: 1,
+                          fontSize: {
+                            xs: "1.15rem",
+                            sm: "1.25rem",
+                            md: "1.4rem",
+                          },
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "text.secondary",
+                          mb: 3,
+                          fontSize: "0.95rem",
+                        }}
+                      >
+                        {item.desc}
+                      </Typography>
+
+                      {/* FEATURES */}
+                      <Grid container spacing={2}>
+                        {item.features.map((feature, i) => (
+                          <Grid item xs={12} sm={6} key={i}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: 1.5,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: "12px",
+                                  bgcolor: "#f3f7ff",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {feature.icon}
+                              </Box>
+
+                              <Box>
+                                <Typography
+                                  sx={{
+                                    fontSize: "14px",
+                                    fontWeight: 700,
+                                    lineHeight: 1.2,
+                                    mb: 0.3,
+                                  }}
+                                >
+                                  {feature.title}
+                                </Typography>
+
+                                <Typography
+                                  sx={{
+                                    fontSize: "13px",
+                                    color: "text.secondary",
+                                  }}
+                                >
+                                  {feature.desc}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+
+                      {/* BUTTON */}
+                      <Box sx={{ mt: "auto", pt: 3 }}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          disableElevation
                           sx={{
-                            p: { xs: 1.5, md: 2 },
-                            display: "flex",
-                            gap: 1.5,
+                            bgcolor: "#151516",
+                            borderRadius: "14px",
+                            py: 1.4,
+                            fontWeight: 600,
+                            textTransform: "none",
+                            fontSize: "15px",
+
+                            "&:hover": {
+                              bgcolor: "#000",
+                            },
                           }}
                         >
-                          {f.icon}
-                          <Box>
-                            <Typography fontWeight="bold" fontSize={14}>
-                              {f.title}
-                            </Typography>
-                            <Typography fontSize={12} color="text.secondary">
-                              {f.desc}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      ))}
-                    </Box>
-
-                    <Box sx={{ mt: "auto", p: 2 }}>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{ bgcolor: "#151516" }}
-                      >
-                        Explore More
-                      </Button>
+                          Explore More
+                        </Button>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
+                </Grid>
               ))}
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
 
-          {/* RIGHT SIDE */}
-          <Box
-            sx={{
-              flex: { xs: "1 1 100%", md: "0 0 28%" },
-              width: "100%",
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row", md: "column" },
-              gap: { xs: 2, md: 3 },
-            }}
-          >
-            <RightTopBox />
-            <RightBottomBox />
-          </Box>
-        </Box>
+          {/* RIGHT SIDEBAR */}
+          <Grid size={{xs: 12, md: 4}}>
+            <Grid
+              container
+              spacing={{ xs: 3, md: 3 }}
+            >
+              <Grid size={{xs: 12, md: 12}}>
+                <RightTopBox />
+              </Grid>
+
+              <Grid size={{xs:12,md:12}}>
+                <RightBottomBox />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
