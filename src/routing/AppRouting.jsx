@@ -6,7 +6,7 @@ import Home from "../pages/Home";
 import Programs from "../pages/Programs";
 import Countries from "../pages/Countries";
 import Services from "../pages/Services";
-// import Contact from "../pages/Contact";
+import Contact from "../pages/Contact";
 // import Dashboard from "../pages/Dashboard";
 // import Apply from "../pages/Apply";
 
@@ -18,7 +18,7 @@ const AppRouting = () => {
         <Route path="/programs" element={<Programs />} />
         <Route path="/countries" element={<Countries />} />
         <Route path="/services" element={<Services />} />
-        {/* <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/contact" element={<Contact />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         {/* <Route path="/apply" element={<Apply />} /> */}
       </Route>
