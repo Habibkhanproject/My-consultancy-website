@@ -8,7 +8,7 @@ import Countries from "../pages/Countries";
 import Services from "../pages/Services";
 import Contact from "../pages/Contact";
 // import Dashboard from "../pages/Dashboard";
-// import Apply from "../pages/Apply";
+import Apply from "../pages/Apply";
 
 const AppRouting = () => {
   return (
@@ -20,7 +20,7 @@ const AppRouting = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-        {/* <Route path="/apply" element={<Apply />} /> */}
+        <Route path="/apply" element={<Apply />} />
       </Route>
     </Routes>
   );
