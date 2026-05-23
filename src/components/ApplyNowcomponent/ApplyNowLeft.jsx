@@ -5,6 +5,8 @@ import {
   TextField,
   MenuItem,
   Button,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 export default function ApplyNowLeft() {
@@ -60,7 +62,7 @@ export default function ApplyNowLeft() {
       <Paper
         elevation={3}
         sx={{
-          p: { xs: 2, sm: 3, md: 4 }, // 🔥 responsive padding
+          p: { xs: 2, sm: 3, md: 4 },
           borderRadius: 3,
           background: "linear-gradient(135deg, #f8fbff, #eef5ff)",
         }}
@@ -69,14 +71,14 @@ export default function ApplyNowLeft() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: { xs: 2, md: 3 }, // 🔥 responsive gap
+            gap: { xs: 2, md: 3 },
           }}
         >
           {/* Row 1 */}
           <Box
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", md: "row" }, // 🔥 responsive
+              flexDirection: { xs: "column", md: "row" },
               gap: 2.5,
             }}
           >
@@ -115,11 +117,7 @@ export default function ApplyNowLeft() {
                 Current Qualification
               </Typography>
 
-              <TextField
-                select
-                fullWidth
-                defaultValue="undergraduate"
-              >
+              <TextField select fullWidth defaultValue="undergraduate">
                 <MenuItem value="foundation">Foundation</MenuItem>
                 <MenuItem value="undergraduate">Undergraduate</MenuItem>
                 <MenuItem value="postgraduate">Postgraduate</MenuItem>
@@ -138,26 +136,44 @@ export default function ApplyNowLeft() {
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 1.5,
-                p: 2,
+                gap: { xs: 1, sm: 1.5, md: 2 },
+                p: { xs: 1.5, md: 2 },
                 border: "1px solid #e0e0e0",
                 borderRadius: 2,
                 backgroundColor: "#f8fbff",
               }}
             >
               {["USA", "UK", "Canada", "Australia"].map((country) => (
-                <Box
+                <FormControlLabel
                   key={country}
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: "#1976d2",
+                        "&.Mui-checked": {
+                          color: "#1976d2",
+                        },
+                      }}
+                    />
+                  }
+                  label={country}
                   sx={{
+                    backgroundColor: "#fff",
                     border: "1px solid #dbeafe",
                     borderRadius: 2,
-                    px: 1.5,
+                    px: { xs: 1.5, md: 2 },
                     py: 0.5,
-                    backgroundColor: "#fff",
+                    m: 0,
+                    minWidth: { xs: "100%", sm: "45%", md: "auto" },
+                    display: "flex",
+                    alignItems: "center",
+                    transition: "0.3s",
+                    "&:hover": {
+                      backgroundColor: "#e3f2fd",
+                      borderColor: "#1976d2",
+                    },
                   }}
-                >
-                  <Typography fontSize={14}>{country}</Typography>
-                </Box>
+                />
               ))}
             </Box>
           </Box>
@@ -209,7 +225,7 @@ export default function ApplyNowLeft() {
               background: "linear-gradient(90deg, #1976d2, #42a5f5)",
               textTransform: "none",
               fontSize: "16px",
-              width: { xs: "100%", md: "auto" }, // 🔥 responsive button
+              width: { xs: "100%", md: "auto" },
             }}
           >
             Submit Application
