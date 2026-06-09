@@ -1,13 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Button, Paper, Stack } from "@mui/material";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import GroupsIcon from "@mui/icons-material/Groups";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LanguageIcon from "@mui/icons-material/Language";
 
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
 const AboutSection = () => {
+  const [aboutData, setAboutData] = useState({
+    headings: {
+      sectionLabel: "",
+      sectionHeading: "",
+    },
+    undergraduate: {
+      title: "",
+      description: "",
+    },
+    masters: {
+      title: "",
+      description: "",
+    },
+    phd: {
+      title: "",
+      description: "",
+    },
+    language: {
+      title: "",
+      description: "",
+    },
+  });
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "homepage", "about"), (snap) => {
+      if (snap.exists()) {
+        const d = snap.data()?.data ?? {};
+
+        setAboutData({
+          headings: {
+            sectionLabel:   d?.headings?.sectionLabel   ?? "",
+            sectionHeading: d?.headings?.sectionHeading ?? "",
+          },
+          undergraduate: {
+            title:       d?.undergraduate?.title       ?? "",
+            description: d?.undergraduate?.description ?? "",
+          },
+          masters: {
+            title:       d?.masters?.title       ?? "",
+            description: d?.masters?.description ?? "",
+          },
+          phd: {
+            title:       d?.phd?.title       ?? "",
+            description: d?.phd?.description ?? "",
+          },
+          language: {
+            title:       d?.language?.title       ?? "",
+            description: d?.language?.description ?? "",
+          },
+        });
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -25,7 +82,7 @@ const AboutSection = () => {
           textTransform: "uppercase",
         }}
       >
-        DIVERSE OPPORTUNITIES
+        {aboutData.headings.sectionLabel}
       </Typography>
 
       {/* Large Header */}
@@ -38,7 +95,7 @@ const AboutSection = () => {
           fontSize: { xs: "2rem", md: "3rem" },
         }}
       >
-        Academic Programs We Cover
+        {aboutData.headings.sectionHeading}
       </Typography>
 
       {/* Main Layout */}
@@ -56,65 +113,48 @@ const AboutSection = () => {
             flex: 1,
             padding: 4,
             borderRadius: 4,
-            minHeight: "400px", // increase height a little
+            minHeight: "400px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between", // pushes buttons downward
+            justifyContent: "space-between",
             backgroundColor: "#131b2e",
           }}
         >
           <Box>
-            <SchoolIcon
-              sx={{
-                fontSize: 60,
-                color: "#4dabff",
-                mb: 2,
-              }}
-            />
+            <SchoolIcon sx={{ fontSize: 60, color: "#4dabff", mb: 2 }} />
 
             <Typography
               variant="h4"
               fontWeight={700}
-              sx={{
-                color: "#f8fafc",
-                mb: 2, // small gap between header and paragraph
-              }}
+              sx={{ color: "#f8fafc", mb: 2 }}
             >
-              Undergraduate (BS)
+              {aboutData.undergraduate.title}
             </Typography>
 
             <Typography
               variant="body1"
-              color="text.secondary"
               mb={4}
               lineHeight={1.8}
-              sx={{
-                color: "#cbd5e1",
-              }}
+              sx={{ color: "#cbd5e1" }}
             >
-              Embark on your academic journey with fully-funded undergraduate
-              programs in high-demand fields like Engineering, AI, and Medicine.
+              {aboutData.undergraduate.description}
             </Typography>
           </Box>
 
-          {/* Buttons */}
+          {/* Hardcoded buttons */}
           <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
             <Button
               variant="contained"
-              sx={{
-                borderRadius: 3,
-                padding: "8px 20px", // reduced button size
-                fontSize: "14px",
-              }}
+              sx={{ borderRadius: 3, padding: "8px 20px", fontSize: "14px" }}
             >
-              4 Year
+              4 Year Program
             </Button>
 
             <Button
               variant="outlined"
               sx={{
                 borderRadius: 3,
-                padding: "8px 20px", // reduced button size
+                padding: "8px 20px",
                 fontSize: "14px",
                 borderColor: "#4dabff",
                 color: "#4dabff",
@@ -126,14 +166,8 @@ const AboutSection = () => {
         </Paper>
 
         {/* Right Side */}
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-          }}
-        >
+        <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+
           {/* Top Two Boxes */}
           <Box
             sx={{
@@ -142,71 +176,30 @@ const AboutSection = () => {
               flexDirection: { xs: "column", sm: "row" },
             }}
           >
-            {/* Box 1 */}
-            <Paper
-              elevation={3}
-              sx={{
-                flex: 1,
-                padding: 3,
-                borderRadius: 4,
-                minHeight: "240px", // increased height
-              }}
-            >
-              <WorkspacePremiumIcon
-                sx={{
-                  fontSize: 45,
-                  color: "#1976d2",
-                  mb: 2,
-                }}
-              />
-
+            {/* Masters Box */}
+            <Paper elevation={3} sx={{ flex: 1, padding: 3, borderRadius: 4, minHeight: "240px" }}>
+              <WorkspacePremiumIcon sx={{ fontSize: 45, color: "#1976d2", mb: 2 }} />
               <Typography variant="h6" fontWeight={700} mb={2}>
-                Master's
+                {aboutData.masters.title}
               </Typography>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                lineHeight={1.8}
-              >
-                Specialized research and professional degree programs across the
-                globe.
+              <Typography variant="body2" color="text.secondary" lineHeight={1.8}>
+                {aboutData.masters.description}
               </Typography>
             </Paper>
 
-            {/* Box 2 */}
-            <Paper
-              elevation={3}
-              sx={{
-                flex: 1,
-                padding: 3,
-                borderRadius: 4,
-                minHeight: "240px", // increased height
-              }}
-            >
-              <GroupsIcon
-                sx={{
-                  fontSize: 45,
-                  color: "#1976d2",
-                  mb: 2,
-                }}
-              />
-
+            {/* PhD Box */}
+            <Paper elevation={3} sx={{ flex: 1, padding: 3, borderRadius: 4, minHeight: "240px" }}>
+              <GroupsIcon sx={{ fontSize: 45, color: "#1976d2", mb: 2 }} />
               <Typography variant="h6" fontWeight={700} mb={2}>
-                PhD / MPhil
+                {aboutData.phd.title}
               </Typography>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                lineHeight={1.8}
-              >
-                Advanced research positions with comprehensive stipend coverage.
+              <Typography variant="body2" color="text.secondary" lineHeight={1.8}>
+                {aboutData.phd.description}
               </Typography>
             </Paper>
           </Box>
 
-          {/* Bottom Full Width Box */}
+          {/* Language Box */}
           <Paper
             elevation={3}
             sx={{
@@ -217,50 +210,29 @@ const AboutSection = () => {
               alignItems: "center",
               flexDirection: { xs: "column", sm: "row" },
               gap: 3,
-              minHeight: "150px", // increased height
+              minHeight: "150px",
               backgroundColor: "#2170e4",
             }}
           >
-            {/* Left Content */}
             <Box>
               <Typography
                 variant="h5"
                 fontWeight={700}
                 mb={2}
-                sx={{
-                  color: "#ffffff",
-                  letterSpacing: "0.5px",
-                }}
+                sx={{ color: "#ffffff", letterSpacing: "0.5px" }}
               >
-                Language Courses
+                {aboutData.language.title}
               </Typography>
-
               <Typography
                 variant="body1"
-                sx={{
-                  color: "#e2e8f0", // soft professional white
-                  lineHeight: 1.8,
-                  maxWidth: "500px",
-                }}
+                sx={{ color: "#e2e8f0", lineHeight: 1.8, maxWidth: "500px" }}
               >
-                Expert preparation for IELTS, TOEFL, and Duolingo with 8.0+ band
-                trainers.
+                {aboutData.language.description}
               </Typography>
             </Box>
 
-            {/* Right Icons */}
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-              }}
-            >
-              <LanguageIcon
-                sx={{
-                  fontSize: 40,
-                  color: "#e8e9eb",
-                }}
-              />
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <LanguageIcon sx={{ fontSize: 40, color: "#e8e9eb" }} />
             </Box>
           </Paper>
         </Box>

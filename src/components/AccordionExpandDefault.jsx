@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -6,25 +7,34 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box } from "@mui/material";
 
-const faqData = [
-  {
-    question: "What are the requirements for a full scholarship?",
-    answer:
-      "Full scholarships typically require a strong academic record (high CGPA), competitive standardized test scores (IELTS/GRE), a compelling statement of purpose, and relevant extracurricular or research experience.",
-  },
-  {
-    question: "Do you help with visa interviews?",
-    answer:
-      "Yes, we conduct multiple mock interview sessions to prepare you for the specific questions and protocols of the embassy you are applying to.",
-  },
-  {
-    question: "Can I apply without IELTS?",
-    answer:
-      "Some universities accept Duolingo or English Proficiency Certificates from your previous institution. However, for most top-tier scholarships and visa requirements, IELTS/TOEFL is mandatory.",
-  },
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
+const EMPTY_FAQS = [
+  { id: "1", question: "", answer: "" },
+  { id: "2", question: "", answer: "" },
+  { id: "3", question: "", answer: "" },
 ];
 
 export default function AccordionExpandDefault() {
+  const [sectionLabel,   setSectionLabel]   = useState("");
+  const [sectionHeading, setSectionHeading] = useState("");
+  const [faqs,           setFaqs]           = useState(EMPTY_FAQS);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "homepage", "faq"), (snap) => {
+      if (snap.exists()) {
+        const d = snap.data()?.data ?? {};
+
+        setSectionLabel(d?.headings?.sectionLabel     ?? "");
+        setSectionHeading(d?.headings?.sectionHeading ?? "");
+        setFaqs(Array.isArray(d?.items) ? d.items : EMPTY_FAQS);
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -39,43 +49,42 @@ export default function AccordionExpandDefault() {
         sx={{
           color: "#1976d2",
           fontWeight: 600,
-          mb: 2, // 🔥 more space
+          mb: 2,
         }}
       >
-       COMMON QUESTIONS
+        {sectionLabel}
       </Typography>
 
       {/* LARGE HEADER */}
       <Typography
         variant="h3"
         fontWeight={700}
-        mb={10} // 🔥 increased margin top/bottom spacing
+        mb={10}
       >
-        Frequently Asked Questions
+        {sectionHeading}
       </Typography>
 
       {/* ACCORDION WRAPPER */}
       <Box
         sx={{
-          maxWidth: 900, // 🔥 wider box
+          maxWidth: 900,
           mx: "auto",
-          mt: 6, // 🔥 margin top added
+          mt: 6,
           display: "flex",
           flexDirection: "column",
-          gap: 2, // 🔥 more spacing between items
-
+          gap: 2,
         }}
       >
-        {faqData.map((item, index) => (
+        {faqs.map((item, index) => (
           <Accordion
-            key={index}
+            key={item.id}
             defaultExpanded={index === 0}
             sx={{
               p: 1,
               bgcolor: "#f8fafc",
               borderRadius: 3,
-              minHeight: 70, // 🔥 slightly taller accordion
-              "&:before": { display: "none" }, // remove default line
+              minHeight: 70,
+              "&:before": { display: "none" },
             }}
           >
             <AccordionSummary

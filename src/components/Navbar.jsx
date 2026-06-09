@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -16,13 +16,27 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
+
+// 🔥 FIREBASE
+import { signOut } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
+
+// 🔥 AUTH CONTEXT
+import { auth, db } from "../config/firebase";
+import { useAuth } from "../AuthContext";
 
 const Navbar = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  const { user } = useAuth();
+
+  const [logoText, setLogoText] = useState("Google Scholar Hub");
 
   const menuItems = [
     { text: "Home", path: "/" },
@@ -31,6 +45,32 @@ const Navbar = () => {
     { text: "Services", path: "/services" },
     { text: "Contact", path: "/contact" },
   ];
+
+  // 🔥 REAL-TIME FIRESTORE LISTENER — reads from homepage/navbar → data.logoText
+  useEffect(() => {
+    const docRef = doc(db, "homepage", "navbar");
+
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+
+        setLogoText(data?.data?.logoText || "Google Scholar Hub");
+      }
+    });
+
+    return () => unsubscribe(); // cleanup listener
+  }, []);
+
+  // 🔥 LOGOUT
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      alert("Logout Successful");
+      navigate("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <AppBar
@@ -60,7 +100,7 @@ const Navbar = () => {
             minHeight: "65px",
           }}
         >
-          {/* Logo */}
+          {/* LOGO (LIVE UPDATE) */}
           <Typography
             variant="h5"
             sx={{
@@ -69,23 +109,22 @@ const Navbar = () => {
               ml: 1,
             }}
           >
-            Google Scholar Hub
+            {logoText}
           </Typography>
 
           {/* DESKTOP MENU */}
           {!isTablet && (
             <>
-              {/* Middle Links */}
-              <Box sx={{ display: "flex", gap: 2, color: "black" }}>
+              <Box sx={{ display: "flex", gap: 2 }}>
                 {menuItems.map((item) => (
                   <Button
                     key={item.text}
-                    color="inherit"
                     component={Link}
                     to={item.path}
                     sx={{
                       textTransform: "none",
                       fontSize: "15px",
+                      color: "black",
                     }}
                   >
                     {item.text}
@@ -93,41 +132,45 @@ const Navbar = () => {
                 ))}
               </Box>
 
-              {/* Right Buttons */}
               <Box sx={{ display: "flex", gap: 2, mr: 1 }}>
-                <Button
-                  variant="text"
-                  component={Link}
-                  to="/dashboard"
-                  sx={{
-                    border: "none",
-                    textTransform: "none",
-                    padding: "8px 18px",
-                    fontSize: "15px",
-                    color: "black",
-                  }}
-                >
-                  Dashboard
-                </Button>
+                {user ? (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/dashboard"
+                      sx={{ textTransform: "none", color: "black" }}
+                    >
+                      Dashboard
+                    </Button>
 
-                <Button
-                  variant="contained"
-                  component={Link}
-                  to="/apply"
-                  sx={{
-                    borderRadius: "10px",
-                    textTransform: "none",
-                    padding: "8px 18px",
-                    fontSize: "15px",
-                  }}
-                >
+                    <Button variant="contained" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button component={Link} to="/login" sx={{ color: "black" }}>
+                      Login
+                    </Button>
+
+                    <Button
+                      variant="contained"
+                      component={Link}
+                      to="/signup"
+                    >
+                      Signup
+                    </Button>
+                  </>
+                )}
+
+                <Button variant="contained" component={Link} to="/apply">
                   Apply Now
                 </Button>
               </Box>
             </>
           )}
 
-          {/* MOBILE / TABLET ICON MENU */}
+          {/* MOBILE MENU */}
           {isTablet && (
             <IconButton onClick={() => setOpen(true)}>
               <MenuIcon />
@@ -136,10 +179,9 @@ const Navbar = () => {
         </Toolbar>
       </Box>
 
-      {/* DRAWER MENU */}
+      {/* MOBILE DRAWER */}
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <Box sx={{ width: 250, padding: 2 }}>
-          {/* Close button */}
           <IconButton onClick={() => setOpen(false)}>
             <CloseIcon />
           </IconButton>
@@ -157,21 +199,29 @@ const Navbar = () => {
               </ListItem>
             ))}
 
-            <ListItem
-              button
-              component={Link}
-              to="/dashboard"
-              onClick={() => setOpen(false)}
-            >
-              <ListItemText primary="Dashboard" />
-            </ListItem>
+            {user ? (
+              <>
+                <ListItem button component={Link} to="/dashboard">
+                  <ListItemText primary="Dashboard" />
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/apply"
-              onClick={() => setOpen(false)}
-            >
+                <ListItem button onClick={handleLogout}>
+                  <ListItemText primary="Logout" />
+                </ListItem>
+              </>
+            ) : (
+              <>
+                <ListItem button component={Link} to="/login">
+                  <ListItemText primary="Login" />
+                </ListItem>
+
+                <ListItem button component={Link} to="/signup">
+                  <ListItemText primary="Signup" />
+                </ListItem>
+              </>
+            )}
+
+            <ListItem button component={Link} to="/apply">
               <ListItemText primary="Apply Now" />
             </ListItem>
           </List>

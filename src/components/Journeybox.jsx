@@ -1,23 +1,42 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography, Button, Stack } from "@mui/material";
 
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
 export default function Journeybox() {
+  const [heading,     setHeading]     = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "homepage", "journey"), (snap) => {
+      if (snap.exists()) {
+        const d = snap.data()?.data ?? {};
+        setHeading(d?.heading     ?? "");
+        setDescription(d?.description ?? "");
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
   return (
     <Box
       sx={{
         width: "100%",
-        minHeight: "60vh", // 👈 reduced height (change as needed)
+        minHeight: "60vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        bgcolor: "#f5f7ff", // background color stays
+        bgcolor: "#f5f7ff",
         textAlign: "center",
         p: 3,
       }}
     >
       <Typography variant="h3" fontWeight="bold" gutterBottom>
-        Ready to Start Your Journey?
+        {heading}
       </Typography>
 
       <Typography
@@ -25,12 +44,12 @@ export default function Journeybox() {
         color="text.secondary"
         sx={{ mb: 3, maxWidth: 700 }}
       >
-        Don't let financial barriers stop your academic growth. Join the
-        thousands of students already studying at their dream destinations.
+        {description}
       </Typography>
 
+      {/* Hardcoded buttons */}
       <Stack
-        direction={{ xs: "column", sm: "row" }} // 👈 column on mobile, row on bigger screens
+        direction={{ xs: "column", sm: "row" }}
         spacing={2}
         alignItems="center"
       >
@@ -38,7 +57,7 @@ export default function Journeybox() {
           variant="contained"
           sx={{
             backgroundColor: "#0058be",
-            width: { xs: "100%", sm: "250px" }, // 👈 full width on mobile
+            width: { xs: "100%", sm: "250px" },
             padding: "12px 35px",
             fontSize: "16px",
             fontWeight: "bold",
@@ -47,14 +66,14 @@ export default function Journeybox() {
             "&:hover": { backgroundColor: "#0047a3" },
           }}
         >
-          Free Book consultation
+          Free Consultation
         </Button>
 
         <Button
           variant="outlined"
           sx={{
             borderColor: "#0058be",
-            width: { xs: "100%", sm: "250px" }, // 👈 responsive width
+            width: { xs: "100%", sm: "250px" },
             color: "#0058be",
             padding: "12px 35px",
             fontSize: "16px",

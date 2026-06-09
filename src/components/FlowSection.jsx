@@ -1,43 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
 import ArticleIcon from "@mui/icons-material/Article";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
-const data = [
-  {
-    icon: <ForumIcon sx={{ fontSize: 32 }} />,
-    title: "Consultation",
-    subtitle: "Expert profile evaluation to find the best-fit universities.",
-    number: 1,
-  },
-  {
-    icon: <ArticleIcon sx={{ fontSize: 32 }} />,
-    title: "Document Review",
-    subtitle: "Fine-tuning of SOPs, LORs, and academic transcripts.",
-    number: 2,
-  },
-  {
-    icon: <SchoolIcon sx={{ fontSize: 32 }} />,
-    title: "Admission",
-    subtitle: "Securing your offer letter and scholarship awards.",
-    number: 3,
-  },
-  {
-    icon: <AirplanemodeActiveIcon sx={{ fontSize: 32 }} />,
-    title: "Visa",
-    subtitle: "Comprehensive visa interview prep and filing support.",
-    number: 4,
-  },
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
+const icons = [
+  <ForumIcon sx={{ fontSize: 32 }} />,
+  <ArticleIcon sx={{ fontSize: 32 }} />,
+  <SchoolIcon sx={{ fontSize: 32 }} />,
+  <AirplanemodeActiveIcon sx={{ fontSize: 32 }} />,
+];
+
+const EMPTY_STEPS = [
+  { id: "1", title: "", subtitle: "" },
+  { id: "2", title: "", subtitle: "" },
+  { id: "3", title: "", subtitle: "" },
+  { id: "4", title: "", subtitle: "" },
 ];
 
 const FlowSection = () => {
+  const [sectionLabel,   setSectionLabel]   = useState("");
+  const [sectionHeading, setSectionHeading] = useState("");
+  const [steps,          setSteps]          = useState(EMPTY_STEPS);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "homepage", "flow"), (snap) => {
+      if (snap.exists()) {
+        const d = snap.data()?.data ?? {};
+
+        setSectionLabel(d?.headings?.sectionLabel   ?? "");
+        setSectionHeading(d?.headings?.sectionHeading ?? "");
+        setSteps(Array.isArray(d?.steps) ? d.steps : EMPTY_STEPS);
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
   return (
     <Box sx={{ py: 10, textAlign: "center" }}>
       {/* Header */}
       <Typography sx={{ color: "#1976d2", fontWeight: 600 }}>
-        OUR SERVICES
+        {sectionLabel}
       </Typography>
       <Typography
         fontWeight={700}
@@ -46,7 +54,7 @@ const FlowSection = () => {
           fontSize: { xs: "1.8rem", sm: "2.5rem", md: "3rem" },
         }}
       >
-        What We Provide
+        {sectionHeading}
       </Typography>
 
       {/* Main Flow Container */}
@@ -57,14 +65,14 @@ const FlowSection = () => {
           alignItems: "flex-start",
           position: "relative",
           flexWrap: "wrap",
-          gap: 10, // increased gap between items
-          paddingTop: 7, // space above the flow
+          gap: 10,
+          paddingTop: 7,
         }}
       >
         {/* CENTER LINE */}
         <Box
           sx={{
-            display: { xs: "none", md: "block" }, // hidden on mobile & tablet, visible on laptop+
+            display: { xs: "none", md: "block" },
             position: "absolute",
             top: "42%",
             left: "10%",
@@ -77,9 +85,9 @@ const FlowSection = () => {
           }}
         />
 
-        {data.map((item, index) => (
+        {steps.map((item, index) => (
           <Box
-            key={index}
+            key={item.id}
             sx={{
               position: "relative",
               zIndex: 2,
@@ -92,15 +100,15 @@ const FlowSection = () => {
               sx={{
                 position: "relative",
                 textAlign: "center",
-                mb: 4, // space below circle
+                mb: 4,
               }}
             >
               {/* Circular Box */}
               <Paper
                 elevation={4}
                 sx={{
-                  width: 105, // increased from 90
-                  height: 105, // increased from 90
+                  width: 105,
+                  height: 105,
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
@@ -108,12 +116,10 @@ const FlowSection = () => {
                   margin: "0 auto",
                   backgroundColor: "white",
                   color: "black",
-                  fontSize: 32, // slightly bigger icon
+                  fontSize: 32,
                   cursor: "pointer",
                   transition: "background-color 0.3s ease",
-
                   border: "2px solid #cbd5e1",
-
                   "&:hover": {
                     backgroundColor: "#1259b8",
                     color: "white",
@@ -121,7 +127,7 @@ const FlowSection = () => {
                   },
                 }}
               >
-                {item.icon}
+                {icons[index] ?? <ForumIcon sx={{ fontSize: 32 }} />}
               </Paper>
 
               {/* Bottom Number Circle */}
@@ -144,7 +150,7 @@ const FlowSection = () => {
                   boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
                 }}
               >
-                {item.number}
+                {index + 1}
               </Box>
             </Box>
 
@@ -155,7 +161,7 @@ const FlowSection = () => {
               mt={2}
               sx={{
                 mb: 1,
-                color: "#0f172a", // professional dark color
+                color: "#0f172a",
                 letterSpacing: "0.3px",
               }}
             >
@@ -164,11 +170,11 @@ const FlowSection = () => {
 
             {/* Subtitle */}
             <Typography
-              variant="body3"
+              variant="body2"
               sx={{
                 color: "text.secondary",
                 mt: 1,
-                lineHeight: 1.6, // better readability
+                lineHeight: 1.6,
               }}
             >
               {item.subtitle}

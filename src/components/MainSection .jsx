@@ -1,46 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Avatar } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
 import BasicRating from "../icons/BasicRating";
-import zarak from "../assets/images/zarakimage.jpg";
-import habib from "../assets/images/habibimage.jpg";
 
-const data = [
-  {
-    icon: <BasicRating />,
-    name: "Zarak Khan",
-    role: "Student Consultant",
-    desc: "The team at Global Scholars Hub made my dream of studying in Germany a reality. Their scholarship guidance was exceptional.",
-    img: zarak,
-  },
-  {
-    icon: <BasicRating />,
-    name: "Habib Ullah",
-    role: "IELTS Student",
-    desc: "I applied for Canada with low expectations, but their visa success rate isn't just a number—they truly know the system inside out.",
-    img: habib,
-  },
-  {
-    icon: <BasicRating />,
-    name: "Sara Ahmed",
-    role: "Scholarship Student",
-    desc: "They helped me secure a fully-funded PhD in the USA. From GRE preparation to mock interviews, they were with me every step.",
-    img: "https://i.pravatar.cc/150?img=7",
-  },
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
+const EMPTY_TESTIMONIALS = [
+  { id: "1", name: "", role: "", desc: "", img: "" },
+  { id: "2", name: "", role: "", desc: "", img: "" },
+  { id: "3", name: "", role: "", desc: "", img: "" },
 ];
 
 const MainSection = () => {
+  const [sectionLabel,   setSectionLabel]   = useState("");
+  const [sectionHeading, setSectionHeading] = useState("");
+  const [testimonials,   setTestimonials]   = useState(EMPTY_TESTIMONIALS);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "homepage", "testimonials"), (snap) => {
+      if (snap.exists()) {
+        const d = snap.data()?.data ?? {};
+
+        setSectionLabel(d?.headings?.sectionLabel     ?? "");
+        setSectionHeading(d?.headings?.sectionHeading ?? "");
+        setTestimonials(Array.isArray(d?.cards) ? d.cards : EMPTY_TESTIMONIALS);
+      }
+    });
+
+    return () => unsub();
+  }, []);
+
   return (
     <Box sx={{ py: 10, px: 3, textAlign: "center", bgcolor: "#f2f4f6" }}>
-      
+
       {/* Small Header */}
       <Typography sx={{ color: "#1976d2", fontWeight: 600 }}>
-        SUCCESS STORIES
+        {sectionLabel}
       </Typography>
 
       {/* Large Header */}
       <Typography variant="h3" fontWeight={700} mt={4} mb={6}>
-        Hear from our Scholars
+        {sectionHeading}
       </Typography>
 
       {/* CONTAINER */}
@@ -50,20 +50,20 @@ const MainSection = () => {
           justifyContent: "center",
           gap: 4,
           flexWrap: "wrap",
-          flexDirection: { xs: "column", sm: "row" }, // ✅ responsive
+          flexDirection: { xs: "column", sm: "row" },
           alignItems: "center",
           maxWidth: "1200px",
           margin: "0 auto",
           mt: 7,
         }}
       >
-        {data.map((item, index) => (
+        {testimonials.map((item, index) => (
           <Paper
-            key={index}
+            key={item.id}
             elevation={3}
             sx={{
-              width: { xs: "100%", sm: 340, md: 360 }, // ✅ responsive width
-              p: { xs: 2, sm: 3 }, // ✅ responsive padding
+              width: { xs: "100%", sm: 340, md: 360 },
+              p: { xs: 2, sm: 3 },
               borderRadius: 4,
               textAlign: "left",
               display: "flex",
@@ -71,7 +71,6 @@ const MainSection = () => {
               justifyContent: "space-between",
               minHeight: { xs: 220, sm: 200 },
               transition: "0.3s",
-
               "&:hover": {
                 transform: "translateY(-5px)",
               },
@@ -79,7 +78,7 @@ const MainSection = () => {
           >
             {/* ICON */}
             <Box sx={{ display: "flex", mt: { xs: 0, sm: 1 }, mb: 2 }}>
-              {item.icon}
+              <BasicRating />
             </Box>
 
             {/* PARAGRAPH */}
@@ -88,7 +87,7 @@ const MainSection = () => {
               sx={{
                 color: "text.secondary",
                 lineHeight: 2,
-                fontSize: { xs: "0.9rem", sm: "0.95rem" }, // ✅ responsive text
+                fontSize: { xs: "0.9rem", sm: "0.95rem" },
               }}
             >
               {item.desc}
@@ -100,7 +99,7 @@ const MainSection = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: 2,
-                mt: { xs: 2, sm: 4 }, // ✅ responsive spacing
+                mt: { xs: 2, sm: 4 },
                 borderTop: "1px solid #e5e7eb",
                 pt: 2,
               }}
