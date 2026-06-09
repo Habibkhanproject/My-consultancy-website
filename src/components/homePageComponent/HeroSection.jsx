@@ -7,7 +7,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 
 const HeroSection = () => {
   const [heroData, setHeroData] = useState({

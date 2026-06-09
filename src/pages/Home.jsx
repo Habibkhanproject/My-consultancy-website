@@ -1,11 +1,11 @@
 import { Box, Typography, Button } from "@mui/material";
-import HeroSection from "../components/HeroSection";
-import Boxes from "../components/Boxes";
-import AboutSection from "../components/AboutSection";
-import FlowSection from "../components/FlowSection";
-import MainSection from "../components/MainSection ";
-import AccordionExpandDefault from "../components/AccordionExpandDefault";
-import Journeybox from "../components/Journeybox";
+import HeroSection from "../components/homePageComponent/HeroSection";
+import Boxes from "../components/homePageComponent/Boxes";
+import AboutSection from "../components/homePageComponent/AboutSection";
+import FlowSection from "../components/homePageComponent/FlowSection";
+import MainSection from "../components/homePageComponent/MainSection ";
+import AccordionExpandDefault from "../components/homePageComponent/AccordionExpandDefault";
+import Journeybox from "../components/homePageComponent/Journeybox";
 
 const Home = () => {
   return (

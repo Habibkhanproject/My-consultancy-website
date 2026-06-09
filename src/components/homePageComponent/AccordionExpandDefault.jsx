@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box } from "@mui/material";
 
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 const EMPTY_FAQS = [

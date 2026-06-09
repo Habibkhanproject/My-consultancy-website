@@ -5,7 +5,7 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import GroupsIcon from "@mui/icons-material/Groups";
 import LanguageIcon from "@mui/icons-material/Language";
 
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 const AboutSection = () => {

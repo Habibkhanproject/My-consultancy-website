@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Avatar } from "@mui/material";
-import BasicRating from "../icons/BasicRating";
+import BasicRating from "../../icons/BasicRating";
 
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 const EMPTY_TESTIMONIALS = [

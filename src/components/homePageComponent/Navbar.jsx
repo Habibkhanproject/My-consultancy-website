@@ -24,8 +24,8 @@ import { signOut } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 
 // 🔥 AUTH CONTEXT
-import { auth, db } from "../config/firebase";
-import { useAuth } from "../AuthContext";
+import { auth, db } from "../../config/firebase";
+import { useAuth } from "../../AuthContext";
 
 const Navbar = () => {
   const theme = useTheme();

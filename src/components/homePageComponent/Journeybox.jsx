@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Box, Typography, Button, Stack } from "@mui/material";
 
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 export default function Journeybox() {

@@ -5,7 +5,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
 const icons = [
